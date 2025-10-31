@@ -5,4 +5,4 @@
 // 4. Em "Quem pode acessar", selecione "Qualquer pessoa".
 // 5. Clique em "Implantar".
 // 6. Copie a "URL do app da Web" fornecida e cole-a aqui.
-export const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+export const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbye4XfedrGDPGtJksMz79vnUWVjFHzqkv3YdpeTtr0cQfNtmFt1eyF0zBhycwrTN4H2/exec';

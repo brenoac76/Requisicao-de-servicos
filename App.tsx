@@ -135,19 +135,19 @@ function App() {
     };
 
     try {
-      const result = await (submitToGoogleScript as any)(payload);
+      const result = await submitToGoogleScript(payload);
       
       setStatus(SubmissionStatus.SUCCESS);
       setFeedbackMessage(result.message || "Requisição enviada com sucesso!");
       resetForm();
-      setTimeout(() => setStatus(SubmissionStatus.IDLE), 4000);
+      setTimeout(() => setStatus(SubmissionStatus.IDLE), 5000);
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Ocorreu um erro desconhecido.';
       setFeedbackMessage(`Falha ao enviar: ${errorMessage}`);
       setStatus(SubmissionStatus.ERROR);
       console.error(err);
-      setTimeout(() => setStatus(SubmissionStatus.IDLE), 4000);
+      setTimeout(() => setStatus(SubmissionStatus.IDLE), 5000);
     }
   };
   
