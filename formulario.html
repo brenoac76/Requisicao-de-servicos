@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requisição de Serviços - Todeschini Ipatinga</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar for better aesthetics */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    /* Simple animation for status message */
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    .status-message-active {
+      display: block;
+      animation: fadeInScale 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Status Message Container -->
+  <div id="statusMsg" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 p-8 rounded-lg shadow-2xl text-center text-xl font-bold max-w-lg w-[90%]"></div>
+
+  <!-- Main Form Content -->
+  <main id="formContent" class="max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-lg my-6 sm:my-10">
+    <header class="text-center mb-8">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-700">Requisição de Serviços</h1>
+      <p class="text-gray-500 mt-2">Todeschini Ipatinga</p>
+    </header>
+
+    <!-- General Information Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-x-6 gap-y-4 items-end pb-6 border-b border-gray-200">
+      <div class="lg:col-span-1">
+        <label for="dataRequisicao" class="block text-sm font-medium text-gray-700">Data</label>
+        <input type="date" id="dataRequisicao" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+      <div class="sm:col-span-2 lg:col-span-3">
+        <label for="clienteRequisicao" class="block text-sm font-medium text-gray-700">Cliente</label>
+        <input type="text" id="clienteRequisicao" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+      <div class="lg:col-span-2">
+        <label for="montador" class="block text-sm font-medium text-gray-700">Montador</label>
+        <select id="montador" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+          <option value="" disabled selected>Selecione</option>
+          <option value="Artur">Artur</option>
+          <option value="Carlos">Carlos</option>
+          <option value="Eder">Eder</option>
+          <option value="Gleisson">Gleisson</option>
+          <option value="Henrique">Henrique</option>
+          <option value="Marcio">Marcio</option>
+          <option value="Mateus">Mateus</option>
+          <option value="Natanael">Natanael</option>
+          <option value="Rafael">Rafael</option>
+          <option value="Kelvin">Kelvin</option>
+        </select>
+      </div>
+      <div class="lg:col-span-2">
+        <label for="ambienteRequisicao" class="block text-sm font-medium text-gray-700">Ambiente</label>
+        <input type="text" id="ambienteRequisicao" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+      <div class="lg:col-span-2">
+        <label for="ordemCompra" class="block text-sm font-medium text-gray-700">Ordem de Compra</label>
+        <input type="text" id="ordemCompra" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+      <div class="lg:col-span-2">
+        <label for="responsavel" class="block text-sm font-medium text-gray-700">Responsável</label>
+        <input type="text" id="responsavel" required class="mt-1 block w-full px-3 py-2 bg-blue-50 border border-blue-200 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition">
+      </div>
+    </div>
+
+    <!-- Dynamic Sections -->
+    <div class="space-y-10 mt-6">
+      <!-- Section 1: Services -->
+      <section>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          1. Serviço para Execução ou Ajustes
+        </h2>
+        <div id="servicosContainer" class="space-y-4"></div>
+        <button type="button" onclick="adicionarItem('servico')" class="mt-4 w-full max-w-xs mx-auto flex items-center justify-center gap-2 bg-blue-50 text-blue-700 font-semibold py-2 px-4 rounded-md border-2 border-dashed border-blue-300 hover:bg-blue-100 hover:border-blue-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+          Adicionar Serviço
+        </button>
+      </section>
+
+      <!-- Section 2: Deliveries -->
+      <section>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2 2h8a1 1 0 001-1zM3 11h10" /></svg>
+          2. Itens para Entrega
+        </h2>
+        <div id="entregasContainer" class="space-y-4"></div>
+        <button type="button" onclick="adicionarItem('entrega')" class="mt-4 w-full max-w-xs mx-auto flex items-center justify-center gap-2 bg-blue-50 text-blue-700 font-semibold py-2 px-4 rounded-md border-2 border-dashed border-blue-300 hover:bg-blue-100 hover:border-blue-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+          Adicionar Item
+        </button>
+      </section>
+
+      <!-- Section 3: Attachments -->
+      <section>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          3. Anexar Imagens
+        </h2>
+        <label for="fotos" class="relative cursor-pointer w-full flex flex-col items-center justify-center p-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+          <div class="text-center">
+             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+            <p class="mt-2 text-sm text-gray-600">
+              <span class="font-semibold">Clique para carregar</span> ou arraste e solte
+            </p>
+            <p class="text-xs text-gray-500">PNG, JPG, GIF até 10MB</p>
+          </div>
+        </label>
+        <input type="file" id="fotos" name="fotos" multiple accept="image/*" class="sr-only">
+        
+        <div id="imagePreviewContainer" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+      </section>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mt-10 pt-6 border-t border-gray-200">
+      <button id="btnEnviar" type="button" onclick="salvarDados()" class="w-full max-w-md mx-auto flex justify-center items-center gap-3 px-6 py-3 text-lg font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-60 disabled:cursor-wait transition-all duration-300">
+        <!-- Spinner Icon (hidden by default) -->
+        <svg id="spinner" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="btnText">ENVIAR REQUISIÇÃO</span>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    let contadorServicos = 0;
+    let contadorEntregas = 0;
+    let filesDataAcumulados = [];
+
+    // --- HTML TEMPLATE FUNCTIONS ---
+    function criarServicoHTML(numero) {
+      return `
+        <div class="item-box bg-gray-50 border border-gray-200 rounded-lg p-4" id="servico-${numero}">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-semibold text-gray-700">Serviço #${numero}</h4>
+            <button type="button" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold py-1 px-3 rounded-md transition" onclick="removerItem('servico', ${numero})">Remover</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600">Qtd</label><input type="text" data-campo="quantidade" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-4"><label class="block text-xs font-medium text-gray-600">Especificação</label><input type="text" data-campo="especificacao" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-4"><label class="block text-xs font-medium text-gray-600">Descrição</label><input type="text" data-campo="descricao" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600">Volume</label><input type="text" data-campo="volume" required class="mt-1 block w-full input-style"></div>
+          </div>
+        </div>
+      `.replace(/input-style/g, 'px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition');
+    }
+
+    function criarEntregaHTML(numero) {
+      return `
+        <div class="item-box bg-gray-50 border border-gray-200 rounded-lg p-4" id="entrega-${numero}">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-semibold text-gray-700">Entrega #${numero}</h4>
+            <button type="button" class="bg-red-100 text-red-700 hover:bg-red-200 text-xs font-bold py-1 px-3 rounded-md transition" onclick="removerItem('entrega', ${numero})">Remover</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+            <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600">Qtd</label><input type="text" data-campo="quantidade" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-4"><label class="block text-xs font-medium text-gray-600">Descrição</label><input type="text" data-campo="descricao" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600">Cor</label><input type="text" data-campo="cor" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600">Fornecedor</label><input type="text" data-campo="fornecedor" required class="mt-1 block w-full input-style"></div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600">Entrega OK?</label>
+              <select data-campo="entregaOk" required class="mt-1 block w-full input-style">
+                <option value="Sim">Sim</option>
+                <option value="Nao">Não</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `.replace(/input-style/g, 'px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition');
+    }
+
+    // --- DYNAMIC ITEM MANAGEMENT ---
+    function adicionarItem(tipo) {
+      const container = document.getElementById(`${tipo}sContainer`);
+      const html = tipo === 'servico' ? criarServicoHTML(++contadorServicos) : criarEntregaHTML(++contadorEntregas);
+      container.insertAdjacentHTML('beforeend', html);
+    }
+
+    function removerItem(tipo, numero) {
+      document.getElementById(`${tipo}-${numero}`)?.remove();
+    }
+
+    // --- IMAGE HANDLING ---
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderImagePreviews() {
+      const container = document.getElementById('imagePreviewContainer');
+      container.innerHTML = '';
+      filesDataAcumulados.forEach(file => {
+        const previewWrapper = document.createElement('div');
+        previewWrapper.className = 'relative group w-full h-24';
+        previewWrapper.innerHTML = `
+          <img src="${file.data}" alt="${file.name}" class="w-full h-full object-cover rounded-md shadow-md">
+          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-all rounded-md">
+            <button type="button" onclick="removerImagem('${file.id}')" class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" title="Remover imagem">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        `;
+        container.appendChild(previewWrapper);
+      });
+    }
+    
+    function removerImagem(id) {
+        filesDataAcumulados = filesDataAcumulados.filter(file => file.id !== id);
+        renderImagePreviews();
+    }
+
+    document.getElementById('fotos').addEventListener('change', async function(event) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+      
+      // Limite de imagens por seleção, não total
+      if (files.length > 20) {
+        alert('Você só pode selecionar até 20 imagens de uma vez.');
+        event.target.value = '';
+        return;
+      }
+      
+      exibirMensagem('info', `Carregando ${files.length} imagem(ns)...`, 2000);
+      
+      try {
+        const promises = files.map(f => readFileAsDataURL(f));
+        const results = await Promise.all(promises);
+        
+        results.forEach((dataUrl, idx) => {
+          filesDataAcumulados.push({
+            id: `${Date.now()}-${idx}-${Math.random()}`, // ID único para remoção
+            name: files[idx].name,
+            mimeType: files[idx].type || 'image/jpeg',
+            data: dataUrl
+          });
+        });
+        
+        renderImagePreviews();
+      } catch (err) {
+        console.error('Erro ao ler arquivos:', err);
+        exibirMensagem('error', 'Falha ao processar as imagens.');
+      } finally {
+        event.target.value = ''; // Permite selecionar os mesmos arquivos novamente
+      }
+    });
+
+    // --- FORM SUBMISSION & UI ---
+    function limparFormulario() {
+      ['dataRequisicao', 'clienteRequisicao', 'ambienteRequisicao', 'ordemCompra', 'responsavel'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('montador').selectedIndex = 0;
+      document.getElementById('fotos').value = '';
+      filesDataAcumulados = [];
+      renderImagePreviews();
+      document.getElementById('servicosContainer').innerHTML = '';
+      document.getElementById('entregasContainer').innerHTML = '';
+      contadorServicos = 0;
+      contadorEntregas = 0;
+      adicionarItem('servico');
+      adicionarItem('entrega');
+      // Set current date back after clearing
+      document.getElementById('dataRequisicao').valueAsDate = new Date();
+    }
+
+    function exibirMensagem(tipo, msg, timeout = 4000) {
+      const msgDiv = document.getElementById('statusMsg');
+      const formContent = document.getElementById('formContent');
+      
+      const typeClasses = {
+        success: 'bg-green-100 text-green-800 border-2 border-green-500',
+        error: 'bg-red-100 text-red-800 border-2 border-red-500',
+        info: 'bg-blue-100 text-blue-800 border-2 border-blue-500',
+      };
+      
+      msgDiv.className = `status-message-active fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 p-8 rounded-lg shadow-2xl text-center text-xl font-bold max-w-lg w-[90%] ${typeClasses[tipo]}`;
+      msgDiv.innerHTML = msg;
+
+      if (tipo === 'success') {
+        formContent.classList.add('hidden');
+        setTimeout(() => {
+          msgDiv.classList.remove('status-message-active');
+          msgDiv.classList.add('hidden');
+          formContent.classList.remove('hidden');
+          limparFormulario();
+        }, timeout);
+      } else {
+        setTimeout(() => {
+            msgDiv.classList.remove('status-message-active');
+            msgDiv.classList.add('hidden');
+        }, timeout);
+      }
+    }
+
+    function coletarDadosDoForm() {
+        const servicos = Array.from(document.querySelectorAll('#servicosContainer .item-box')).map(el => ({
+            quantidade: (el.querySelector('[data-campo="quantidade"]')?.value || '').trim(),
+            especificacao: (el.querySelector('[data-campo="especificacao"]')?.value || '').trim(),
+            descricao: (el.querySelector('[data-campo="descricao"]')?.value || '').trim(),
+            volume: (el.querySelector('[data-campo="volume"]')?.value || '').trim()
+        }));
+
+        const entregas = Array.from(document.querySelectorAll('#entregasContainer .item-box')).map(el => ({
+            quantidade: (el.querySelector('[data-campo="quantidade"]')?.value || '').trim(),
+            descricao: (el.querySelector('[data-campo="descricao"]')?.value || '').trim(),
+            cor: (el.querySelector('[data-campo="cor"]')?.value || '').trim(),
+            fornecedor: (el.querySelector('[data-campo="fornecedor"]')?.value || '').trim(),
+            entregaOk: (el.querySelector('[data-campo="entregaOk"]')?.value || '').trim()
+        }));
+
+        return {
+            data: document.getElementById('dataRequisicao').value,
+            cliente: document.getElementById('clienteRequisicao').value.trim(),
+            montador: document.getElementById('montador').value,
+            ambiente: document.getElementById('ambienteRequisicao').value.trim(),
+            ordemCompra: document.getElementById('ordemCompra').value.trim(),
+            responsavel: document.getElementById('responsavel').value.trim(),
+            servicos,
+            entregas,
+            filesData: filesDataAcumulados.map(({id, ...rest}) => rest), // Remove ID before sending
+            numServicos: servicos.length,
+            numEntregas: entregas.length
+        };
+    }
+    
+    function setSubmitButtonState(isSubmitting) {
+        const btn = document.getElementById('btnEnviar');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+        
+        btn.disabled = isSubmitting;
+        if (isSubmitting) {
+            spinner.classList.remove('hidden');
+            btnText.textContent = 'ENVIANDO...';
+        } else {
+            spinner.classList.add('hidden');
+            btnText.textContent = 'ENVIAR REQUISIÇÃO';
+        }
+    }
+
+    async function salvarDados() {
+      const dados = coletarDadosDoForm();
+
+      if (!dados.data || !dados.cliente || !dados.montador) {
+        exibirMensagem('error', "Preencha os campos obrigatórios: Data, Cliente e Montador.");
+        return;
+      }
+      
+      setSubmitButtonState(true);
+      exibirMensagem('info', 'Processando e enviando, por favor aguarde...', 10000);
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          exibirMensagem('success', `✅ SUCESSO! ${response || ''}`, 5000);
+          setSubmitButtonState(false);
+        })
+        .withFailureHandler(function(error) {
+          const errMsg = (error && error.message) ? error.message : JSON.stringify(error);
+          exibirMensagem('error', '❌ FALHA NO ENVIO: ' + errMsg);
+          setSubmitButtonState(false);
+        })
+        .salvarRequisicao(dados);
+    }
+
+    window.onload = () => {
+      adicionarItem('servico');
+      adicionarItem('entrega');
+      // Set current date
+      document.getElementById('dataRequisicao').valueAsDate = new Date();
+    };
+  </script>
+</body>
+</html>

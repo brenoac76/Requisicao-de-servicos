@@ -1,0 +1,5 @@
+{
+  "name": "Formulário de Requisição Moderno",
+  "description": "Um formulário de requisição online moderno e responsivo que envia dados para uma Planilha Google através do Google Apps Script. Construído com React e Tailwind CSS.",
+  "requestFramePermissions": []
+}
